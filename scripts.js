@@ -1,4 +1,3 @@
-// Game state variables
 let gameState = {
     teamA: { name: '', score: 0, stats: { Spike: 0, Block: 0, Serve: 0, Attack: 0 } },
     teamB: { name: '', score: 0, stats: { Spike: 0, Block: 0, Serve: 0, Attack: 0 } },
@@ -8,7 +7,8 @@ let gameState = {
     gameActive: false
 };
 
-// Start the game
+let gameTimer = null;
+
 function startGame() {
     const teamAName = document.getElementById('teamAName').value.trim() || 'Team A';
     const teamBName = document.getElementById('teamBName').value.trim() || 'Team B';
@@ -18,7 +18,7 @@ function startGame() {
     gameState.gameStartTime = new Date();
     gameState.gameActive = true;
 
-    // Update display
+
     document.getElementById('teamADisplay').textContent = teamAName;
     document.getElementById('teamBDisplay').textContent = teamBName;
     document.getElementById('teamAStatsName').textContent = teamAName;
@@ -33,6 +33,9 @@ function startGame() {
     
     // Start game duration timer
     startGameTimer();
+    
+    // Update info cards
+    updateInfoCards();
 }
 
 // Add point to team
@@ -146,7 +149,11 @@ function updateInfoCards() {
 
 // Start game timer
 function startGameTimer() {
-    setInterval(() => {
+    if (gameTimer) {
+        clearInterval(gameTimer);
+    }
+    
+    gameTimer = setInterval(() => {
         if (gameState.gameStartTime && gameState.gameActive) {
             const now = new Date();
             const duration = Math.floor((now - gameState.gameStartTime) / 60000);
@@ -160,6 +167,12 @@ function endGame(winningTeam) {
     gameState.gameActive = false;
     const winner = gameState[`team${winningTeam}`];
     const loser = gameState[`team${winningTeam === 'A' ? 'B' : 'A'}`];
+
+    // Stop timer
+    if (gameTimer) {
+        clearInterval(gameTimer);
+        gameTimer = null;
+    }
 
     // Add to log
     addToLog('Game Won', winner.name, 'end');
@@ -189,6 +202,7 @@ function resetGame() {
         gameState.teamB.stats = { Spike: 0, Block: 0, Serve: 0, Attack: 0 };
         gameState.gameLog = [];
         gameState.gameActive = true;
+        gameState.gameStartTime = new Date();
 
         // Update displays
         document.getElementById('teamAScore').textContent = '0';
@@ -200,6 +214,9 @@ function resetGame() {
 
         // Hide winner section
         document.getElementById('winnerSection').classList.add('hidden');
+
+        // Restart timer
+        startGameTimer();
 
         // Add reset log
         addToLog('Game Reset', 'System', 'start');
@@ -237,6 +254,12 @@ function undoLastAction() {
 
 // Start new game
 function newGame() {
+    // Stop timer
+    if (gameTimer) {
+        clearInterval(gameTimer);
+        gameTimer = null;
+    }
+
     // Reset all game state
     gameState = {
         teamA: { name: '', score: 0, stats: { Spike: 0, Block: 0, Serve: 0, Attack: 0 } },
@@ -313,9 +336,8 @@ document.addEventListener('keydown', function(e) {
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
-    // Add some initial styling animations
-    const sections = document.querySelectorAll('.section');
-    sections.forEach((section, index) => {
-        section.style.animationDelay = `${index * 0.1}s`;
-    });
+    // Initialize info cards
+    updateInfoCards();
+    
+    console.log('Volleyball Score Tracker loaded successfully!');
 });
