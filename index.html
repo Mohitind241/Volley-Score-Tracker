@@ -4,392 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Volleyball Score Tracker</title>
-    <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            color: white;
-        }
-
-        .header h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        .volleyball-icon {
-            font-size: 2rem;
-            margin: 0 10px;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
-        }
-
-        .section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
-
-        .section.hidden {
-            display: none;
-        }
-
-        .setup-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .team-input {
-            text-align: center;
-        }
-
-        .team-input h3 {
-            margin-bottom: 15px;
-            color: #667eea;
-            font-size: 1.5rem;
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-            color: #555;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .start-btn {
-            grid-column: 1 / -1;
-            justify-self: center;
-            padding: 15px 50px;
-            font-size: 1.2rem;
-        }
-
-        .game-board {
-            display: grid;
-            grid-template-columns: 1fr 200px 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .team-section {
-            text-align: center;
-            padding: 20px;
-            border-radius: 15px;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-        }
-
-        .team-section.team-b {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        }
-
-        .team-name {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-
-        .team-score {
-            font-size: 4rem;
-            font-weight: bold;
-            margin: 20px 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .action-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .action-btn {
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .action-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.05);
-        }
-
-        .vs-section {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            border-radius: 15px;
-            color: #333;
-        }
-
-        .vs-text {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .target-score {
-            font-size: 1rem;
-            opacity: 0.8;
-        }
-
-        .game-controls {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .control-btn {
-            margin: 0 10px;
-            padding: 10px 20px;
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .control-btn:hover {
-            background: #ff5252;
-            transform: translateY(-2px);
-        }
-
-        .log-section {
-            max-height: 400px;
-            overflow-y: auto;
-            border: 2px solid #e1e5e9;
-            border-radius: 10px;
-            padding: 20px;
-            background: #f8f9fa;
-        }
-
-        .log-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: #667eea;
-            text-align: center;
-        }
-
-        .log-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            margin-bottom: 10px;
-            background: white;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .log-action {
-            font-weight: 600;
-            color: #333;
-        }
-
-        .log-team {
-            color: #667eea;
-            font-weight: 600;
-        }
-
-        .log-time {
-            color: #888;
-            font-size: 0.9rem;
-        }
-
-        .winner-section {
-            text-align: center;
-            padding: 40px;
-            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
-            border-radius: 15px;
-        }
-
-        .winner-title {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: #2d3436;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .final-score {
-            font-size: 1.5rem;
-            margin-bottom: 30px;
-            color: #636e72;
-        }
-
-        .celebration {
-            font-size: 3rem;
-            margin: 20px 0;
-            animation: rotate 2s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 768px) {
-            .setup-form {
-                grid-template-columns: 1fr;
-            }
-
-            .game-board {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .vs-section {
-                order: -1;
-            }
-
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .team-score {
-                font-size: 3rem;
-            }
-
-            .action-buttons {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .stats-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .team-stats {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px solid #e1e5e9;
-        }
-
-        .stat-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding: 5px 0;
-            border-bottom: 1px solid #e1e5e9;
-        }
-
-        .stat-label {
-            font-weight: 600;
-            color: #555;
-        }
-
-        .stat-value {
-            font-weight: bold;
-            color: #667eea;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
@@ -523,38 +139,38 @@
                         <div class="team-stats">
                             <h4 id="teamAStatsName">Team A</h4>
                             <div class="stat-item">
-                                <span>Spikes:</span>
+                                <span class="stat-label">Spikes:</span>
                                 <span class="stat-value" id="teamASpikes">0</span>
                             </div>
                             <div class="stat-item">
-                                <span>Blocks:</span>
+                                <span class="stat-label">Blocks:</span>
                                 <span class="stat-value" id="teamABlocks">0</span>
                             </div>
                             <div class="stat-item">
-                                <span>Serves:</span>
+                                <span class="stat-label">Serves:</span>
                                 <span class="stat-value" id="teamAServes">0</span>
                             </div>
                             <div class="stat-item">
-                                <span>Attacks:</span>
+                                <span class="stat-label">Attacks:</span>
                                 <span class="stat-value" id="teamAAttacks">0</span>
                             </div>
                         </div>
                         <div class="team-stats">
                             <h4 id="teamBStatsName">Team B</h4>
                             <div class="stat-item">
-                                <span>Spikes:</span>
+                                <span class="stat-label">Spikes:</span>
                                 <span class="stat-value" id="teamBSpikes">0</span>
                             </div>
                             <div class="stat-item">
-                                <span>Blocks:</span>
+                                <span class="stat-label">Blocks:</span>
                                 <span class="stat-value" id="teamBBlocks">0</span>
                             </div>
                             <div class="stat-item">
-                                <span>Serves:</span>
+                                <span class="stat-label">Serves:</span>
                                 <span class="stat-value" id="teamBServes">0</span>
                             </div>
                             <div class="stat-item">
-                                <span>Attacks:</span>
+                                <span class="stat-label">Attacks:</span>
                                 <span class="stat-value" id="teamBAttacks">0</span>
                             </div>
                         </div>
