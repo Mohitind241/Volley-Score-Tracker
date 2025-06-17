@@ -404,6 +404,10 @@ body {
     color: white;
 }
 
+.stat-label {
+    font-weight: 600;
+}
+
 .stat-value {
     background: rgba(255, 255, 255, 0.2);
     padding: 4px 12px;
