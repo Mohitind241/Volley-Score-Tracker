@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volleyball Score Tracker</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Setup Section -->
+        <div id="setupSection" class="section">
+            <div class="header">
+                <h1>
+                    <i class="fas fa-volleyball-ball volleyball-icon"></i>
+                    Volleyball Score Tracker
+                    <i class="fas fa-volleyball-ball volleyball-icon"></i>
+                </h1>
+                <p>Track your game with precision and style</p>
+            </div>
+
+            <div class="setup-card">
+                <h2><i class="fas fa-users"></i> Team Setup</h2>
+                <div class="setup-form">
+                    <div class="team-input">
+                        <h3><i class="fas fa-flag"></i> Team A</h3>
+                        <label for="teamAName">Team Name</label>
+                        <input type="text" id="teamAName" placeholder="Enter Team A name" value="Team Alpha">
+                    </div>
+                    <div class="team-input">
+                        <h3><i class="fas fa-flag"></i> Team B</h3>
+                        <label for="teamBName">Team Name</label>
+                        <input type="text" id="teamBName" placeholder="Enter Team B name" value="Team Beta">
+                    </div>
+                </div>
+                <button class="start-btn" onclick="startGame()">
+                    <i class="fas fa-play"></i> Start Game
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Section -->
+        <div id="gameSection" class="section hidden">
+            <div class="game-header">
+                <h1><i class="fas fa-trophy"></i> Volleyball Score Tracker</h1>
+                <p>Live Game in Progress</p>
+            </div>
+
+            <!-- Winner Announcement -->
+            <div id="winnerSection" class="winner-card hidden">
+                <div class="celebration">🏆</div>
+                <h2 id="winnerText">🎉 Congratulations! 🎉</h2>
+                <p id="finalScoreText" class="final-score"></p>
+                <button class="play-again-btn" onclick="newGame()">
+                    <i class="fas fa-play"></i> Play Again
+                </button>
+            </div>
+
+            <!-- Game Board -->
+            <div class="game-board">
+                <!-- Team A -->
+                <div class="team-section team-a">
+                    <div class="team-header">
+                        <h3 id="teamADisplay">Team A</h3>
+                        <div class="team-score" id="teamAScore">0</div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="addPoint('A', 'Spike')">
+                            <i class="fas fa-hand-rock"></i> Spike
+                        </button>
+                        <button class="action-btn" onclick="addPoint('A', 'Block')">
+                            <i class="fas fa-shield-alt"></i> Block
+                        </button>
+                        <button class="action-btn" onclick="addPoint('A', 'Serve')">
+                            <i class="fas fa-hand-paper"></i> Serve
+                        </button>
+                        <button class="action-btn" onclick="addPoint('A', 'Attack')">
+                            <i class="fas fa-bolt"></i> Attack
+                        </button>
+                    </div>
+                </div>
+
+                <!-- VS Section -->
+                <div class="vs-section">
+                    <div class="vs-text">VS</div>
+                    <div class="target-info">
+                        <i class="fas fa-target"></i>
+                        <span>First to 25 wins!</span>
+                    </div>
+                    <div class="current-score">
+                        <div class="score-label">Current Score</div>
+                        <div class="score-display" id="currentScore">0 - 0</div>
+                    </div>
+                </div>
+
+                <!-- Team B -->
+                <div class="team-section team-b">
+                    <div class="team-header">
+                        <h3 id="teamBDisplay">Team B</h3>
+                        <div class="team-score" id="teamBScore">0</div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="addPoint('B', 'Spike')">
+                            <i class="fas fa-hand-rock"></i> Spike
+                        </button>
+                        <button class="action-btn" onclick="addPoint('B', 'Block')">
+                            <i class="fas fa-shield-alt"></i> Block
+                        </button>
+                        <button class="action-btn" onclick="addPoint('B', 'Serve')">
+                            <i class="fas fa-hand-paper"></i> Serve
+                        </button>
+                        <button class="action-btn" onclick="addPoint('B', 'Attack')">
+                            <i class="fas fa-bolt"></i> Attack
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Controls -->
+            <div class="game-controls">
+                <button class="control-btn reset-btn" onclick="resetGame()">
+                    <i class="fas fa-redo"></i> Reset Game
+                </button>
+                <button class="control-btn undo-btn" onclick="undoLastAction()">
+                    <i class="fas fa-undo"></i> Undo Last
+                </button>
+                <button class="control-btn new-game-btn" onclick="newGame()">
+                    <i class="fas fa-plus"></i> New Game
+                </button>
+            </div>
+
+            <!-- Statistics and Log -->
+            <div class="stats-log-container">
+                <!-- Team Statistics -->
+                <div class="stats-section">
+                    <h3><i class="fas fa-award"></i> Team Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="team-stats">
+                            <h4 id="teamAStatsName">Team A</h4>
+                            <div class="stat-item">
+                                <span class="stat-label">Spikes:</span>
+                                <span class="stat-value" id="teamASpikes">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Blocks:</span>
+                                <span class="stat-value" id="teamABlocks">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Serves:</span>
+                                <span class="stat-value" id="teamAServes">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Attacks:</span>
+                                <span class="stat-value" id="teamAAttacks">0</span>
+                            </div>
+                        </div>
+                        <div class="team-stats">
+                            <h4 id="teamBStatsName">Team B</h4>
+                            <div class="stat-item">
+                                <span class="stat-label">Spikes:</span>
+                                <span class="stat-value" id="teamBSpikes">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Blocks:</span>
+                                <span class="stat-value" id="teamBBlocks">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Serves:</span>
+                                <span class="stat-value" id="teamBServes">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Attacks:</span>
+                                <span class="stat-value" id="teamBAttacks">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Log -->
+                <div class="log-section">
+                    <h3><i class="fas fa-clock"></i> Game Action Log</h3>
+                    <div id="actionLog" class="action-log">
+                        <p class="no-actions">Game actions will appear here...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Info Cards -->
+            <div class="info-cards">
+                <div class="info-card">
+                    <div class="info-icon">⏱️</div>
+                    <h4>Game Duration</h4>
+                    <p id="gameDuration">0 minutes</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">📊</div>
+                    <h4>Total Points</h4>
+                    <p id="totalPoints">0 points scored</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">🔥</div>
+                    <h4>Leading Team</h4>
+                    <p id="leadingTeam">Tied</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
